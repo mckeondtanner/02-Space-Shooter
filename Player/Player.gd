@@ -7,6 +7,14 @@ var rot_speed = 5.0
 
 var nose = Vector2(0, -60)
 var health = 10
+var shields = 0
+var shield_regen = 0.1
+var shield_max = 50
+var shield_textures = [
+	preload("res://Assets//spaceshooter/PNG/Effects/shield1.png"),
+	preload("res://Assets//spaceshooter/PNG/Effects/shield2.png"),
+	preload("res://Assets//spaceshooter/PNG/Effects/shield3.png")
+]
 
 onready var Bullet = load("res://Player/Bullet.tscn")
 onready var Explosion = load("res://Effects/Explosion.tscn")
@@ -22,34 +30,31 @@ func _physics_process(_delta):
 	position.x = wrapf(position.x, 0.0, Global.VP.x)
 	position.y = wrapf(position.y, 0.0, Global.VP.y)
 
+	shields = clamp(shields + shield_regen, -100, shield_max)
+	if shields >= shield_max:
+		$Shield.hide()
+	elif shields >= shield_max * 0.75:
+		$Shield.show()
+		$Shield/Sprite.texture = shield_textures[2]
+	elif shields >= shield_max * 0.4:
+		$Shield.show()
+		$Shield/Sprite.texture = shield_textures[1]
+	elif shields > 0:
+		$Shield.show()
+		$Shield/Sprite.texture = shield_textures[0]
+	else:
+		$Shield.hide()
+
 func get_input():
 	var dir = Vector2.ZERO
-	$Exhaust_Container/ExhaustBL.hide()
-	$Exhaust_Container/ExhaustBR.hide()
-	$Exhaust_Container/ExhaustTL.hide()
-	$Exhaust_Container/ExhaustTR.hide()
+	$Exhaust_Container/Exhaust.hide()
 	if Input.is_action_pressed("up"):
-		$Exhaust_Container/ExhaustBL.show()
-		$Exhaust_Container/ExhaustBR.show()
+		$Exhaust_Container/Exhaust.show()
 		dir += Vector2(0, -1)
 	if Input.is_action_pressed("left"):
-		if Input.is_action_pressed("left") and Input.is_action_pressed("up"):
-			$Exhaust_Container/ExhaustBL.show()
-			$Exhaust_Container/ExhaustBR.show()
-			$Exhaust_Container/ExhaustTR.show()
-			rotation_degrees -= rot_speed
-		else:
-			$Exhaust_Container/ExhaustBR.show()
-			rotation_degrees -= rot_speed
+		rotation_degrees -= rot_speed
 	if Input.is_action_pressed("right"):
-		if Input.is_action_pressed("right") and Input.is_action_pressed("up"):
-			$Exhaust_Container/ExhaustBL.show()
-			$Exhaust_Container/ExhaustBR.show()
-			$Exhaust_Container/ExhaustTL.show()
-			rotation_degrees += rot_speed
-		else:
-			$Exhaust_Container/ExhaustBL.show()
-			rotation_degrees += rot_speed
+		rotation_degrees += rot_speed
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
 	return dir.rotated(rotation)
@@ -78,3 +83,14 @@ func _on_Area2D_body_entered(body):
 		if body.has_method("damage"):
 			body.damage(100)
 		damage(100)
+
+
+func _on_Shield_area_entered(area):
+	if "damage" in area and not area.is_in_group("friendly") and shields >= 0:
+		shields -= area.damage
+		area.queue_free()
+
+func _on_Shield_body_entered(body):
+	if body != self and not body.is_in_group("friendly") and body.has_method("damage") and shields >= 0:
+		shields -= 100
+		body.damage(100)

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var velocity = Vector2(0, -100.0)
+var velocity = Vector2(0, -200.0)
 var health = 1
 var score = 10
 

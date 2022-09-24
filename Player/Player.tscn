@@ -1,47 +1,45 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/kenney_simplespace/PNG/Default/effect_yellow.png" type="Texture" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
-[ext_resource path="res://Assets/kenney_simplespace/PNG/Default/ship_sidesB.png" type="Texture" id=3]
+[ext_resource path="res://Assets/spaceshooter/PNG/playerShip2_green.png" type="Texture" id=3]
+[ext_resource path="res://Assets/spaceshooter/PNG/Effects/shield3.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 72.0278
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="Exhaust_Container" type="Node2D" parent="."]
 
-[node name="ExhaustBL" type="Sprite" parent="Exhaust_Container"]
-position = Vector2( -26, 43 )
-rotation = 0.436332
-scale = Vector2( 0.5, 0.75 )
-texture = ExtResource( 1 )
-
-[node name="ExhaustBR" type="Sprite" parent="Exhaust_Container"]
-position = Vector2( 26, 43 )
-rotation = -0.436332
-scale = Vector2( 0.5, 0.75 )
-texture = ExtResource( 1 )
-
-[node name="ExhaustTL" type="Sprite" parent="Exhaust_Container"]
-position = Vector2( -42, -27.5 )
-rotation = 2.05949
-scale = Vector2( 0.5, 0.75 )
-texture = ExtResource( 1 )
-
-[node name="ExhaustTR" type="Sprite" parent="Exhaust_Container"]
-position = Vector2( 42, -27.5 )
-rotation = -2.05949
-scale = Vector2( 0.5, 0.75 )
+[node name="Exhaust" type="Sprite" parent="Exhaust_Container"]
+position = Vector2( 0, 50 )
+scale = Vector2( 0.5, 0.8 )
 texture = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 3 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -10, -27.4, -10, -11.2, -9.5, -11, -8.4, -11, -2.4, -28, 2.4, -28, 8.2, -11.8, 10.2, -28, 22, -28, 22, -24.4, 31.1, -4, 27.9, -4, 21.1, 4.3, 30, 13.2, 30, 20, 27.6, 20, 11.6, 30, 4, 30, 4, 27.5, 1, 20, 3.6, 20, 4.6, 16.9, -0.9, 20.3, -3, 19.2, -3, 17.9, -4.1, 17, -1.5, 28, -4.7, 28, -13, 30.8, -13, 28.2, -30, 19.2, -30, 13.1, -20, 4.1, -30, -5.1, -30, -12, -28.2, -12, -20, -27.5, -20, -30.8 )
+scale = Vector2( 0.8, 0.8 )
+polygon = PoolVector2Array( 8, -36.1, 18.2, -17.5, 19.4, -17.5, 56, -0.299999, 56, 12.7, 39.8, 37.5, 28.8, 37.5, 18.5, 34.9, 16.5, 37.5, -17, 37.5, -17, 36.8, -19.8, 35.3, -32.8, 37.5, -41, 37.5, -41, 36.1, -56, 14.9, -56, 0.5, -20, -16.8, -20, -17.6, -14, -21.6, -14, -23.9, -8, -36.9, -8, -37.5, 8, -37.5 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-polygon = PoolVector2Array( 0, -29, -3, -29, -9, -12, -9, -28, -20, -32, -31, -12, -31, -5, -22, 4, -22, 4, -31, 12, -31, 19, -13, 32, -2, 29, 0, 21, 4, 30, 12, 31, 31, 21, 31, 13, 22, 4, 32, -4, 23, -29, 10, -29, 8, -15, 3, -29 )
+polygon = PoolVector2Array( 0, -31, -7, -31, -14, -17, -45, -1, -46, 0, -46, 12, -33, 31, 33, 31, 46, 10, 46, -1, 15, -16, 7, -31 )
+
+[node name="Shield" type="Area2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Shield"]
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shield"]
+position = Vector2( 0, 3 )
+shape = SubResource( 1 )
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="area_entered" from="Shield" to="." method="_on_Shield_area_entered"]
+[connection signal="body_entered" from="Shield" to="." method="_on_Shield_body_entered"]

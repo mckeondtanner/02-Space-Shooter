@@ -1,12 +1,21 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Player/Player_Container.gd" type="Script" id=1]
 [ext_resource path="res://Asteroid/Asteroid_Container.gd" type="Script" id=2]
 [ext_resource path="res://Enemy/Enemy_Container.gd" type="Script" id=3]
 [ext_resource path="res://UI/Game.gd" type="Script" id=4]
+[ext_resource path="res://Assets/background2.jpg" type="Texture" id=5]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 4 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 437.0
+margin_bottom = 300.0
+rect_scale = Vector2( 2.34365, 2.0011 )
+texture = ExtResource( 5 )
 
 [node name="Player_Container" type="Node2D" parent="."]
 script = ExtResource( 1 )

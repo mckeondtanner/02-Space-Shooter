@@ -3,7 +3,7 @@
 [ext_resource path="res://Assets/platformergraphics-requestpack/Tiles/laserGreenVertical.png" type="Texture" id=1]
 [ext_resource path="res://Player/Bullet.gd" type="Script" id=2]
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" groups=["friendly"]]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
