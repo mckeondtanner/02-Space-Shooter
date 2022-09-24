@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Asteroid/Asteroid.gd" type="Script" id=1]
+[ext_resource path="res://Assets/kenney_simplespace/PNG/Default/meteor_squareDetailedLarge.png" type="Texture" id=2]
+
+[node name="Asteroid" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 4, -26.1, 26, -12.1, 26, -10.3, 28.4, 4, 26.1, 4, 10.1, 28, -2.6, 28, -25, 13.1, -25, 12.1, -28, 10.1, -28, -3, -26.1, -3, -11, -25.6, -11, -28, 4, -28 )
